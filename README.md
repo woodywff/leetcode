@@ -21,7 +21,7 @@ for t1_file in tqdm(glob.glob(os.path.abspath('../data/preprocessed_val_data/*/*
 print('Done')
 ```
 ----------------
-Leetcode: Find K-th Smallest Pair Distance
+## Leetcode: Find K-th Smallest Pair Distance
 ```
 class Solution:
     def smallestDistancePair(self, nums: List[int], k: int) -> int:
@@ -47,3 +47,30 @@ class Solution:
         return lo
 ```
 ----
+## Leetcode: Split Array Largest Sum
+
+```
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        left=max(nums) 
+        right=sum(nums) 
+        while left < right: 
+            mid=left+(right-left)//2 
+            if self.canSplit(nums,m,mid): 
+                right = mid 
+            else: 
+                left=mid+1 
+        return left 
+    
+    def canSplit(self,nums,m,sum_ceil): 
+        cnt=1 
+        curSum=0 
+        for i in range(len(nums)): 
+            curSum+=nums[i] 
+            if curSum>sum_ceil: 
+                curSum=nums[i] 
+                cnt+=1 
+                if cnt>m: 
+                    return False 
+        return True
+```
