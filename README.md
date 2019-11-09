@@ -74,3 +74,60 @@ class Solution:
                     return False 
         return True
 ```
+---
+## Word Search II
+
+```
+import collections
+
+class Node:
+    def __init__(self):
+        self.children = collections.defaultdict(Node)
+        # self.is_word = False
+        self.value = ''
+
+class Trie:
+    def __init__(self):
+        self.root = Node()
+        
+    def insert(self,word):
+        curr = self.root
+        for w in word:
+            curr = curr.children[w]
+        curr.is_word = True
+        curr.value = word
+
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        trie = Trie()
+        for word in words:
+            trie.insert(word)
+        initial = [word[0] for word in words]
+        res = []
+
+        def find_next(curr_node, curr_x, curr_y):
+            if curr_node.value:
+                res.append(curr_node.value)
+                curr_node.value = ''
+            
+            if curr_x < 0 or curr_x >= len(board) or curr_y < 0 or curr_y >= len(board[0]):
+                return
+            next_node = curr_node.children.get(board[curr_x][curr_y])
+            if next_node is None:
+                return
+            tmp, board[curr_x][curr_y] = board[curr_x][curr_y], '*'
+            for dx,dy in zip([1,-1,0,0],[0,0,1,-1]):
+                find_next(next_node, curr_x+dx, curr_y+dy)
+            board[curr_x][curr_y] = tmp
+                    
+            
+         
+        for x in range(len(board)):
+            for y in range(len(board[0])):
+                if board[x][y] in initial:
+                    find_next(trie.root, x, y)
+        return res
+                    
+```
+---
