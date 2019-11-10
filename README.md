@@ -131,3 +131,22 @@ class Solution:
                     
 ```
 ---
+## Palindrome Pairs
+```
+class Solution:
+    def is_palindrome(self, word):
+        return word == word[::-1]
+    
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        dic = {word:i for i,word in enumerate(words)}
+        res = []
+        for i, word in enumerate(words):
+            for j in range(len(word)+1):
+                prefix, suffix = word[:j],word[j:]
+                if self.is_palindrome(prefix) and suffix[::-1] in dic and dic[suffix[::-1]] != i:
+                    res.append([dic[suffix[::-1]],i])
+                if suffix and self.is_palindrome(suffix) and prefix[::-1] in dic and dic[prefix[::-1]] != i:
+                    res.append([i,dic[prefix[::-1]]])
+        return res
+```  
+---
