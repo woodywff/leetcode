@@ -174,3 +174,54 @@ class Solution(object):
         return pa
 ```
 ---
+## Reverse Linked List
+### Solution 1: Head to origin
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
+        prev = head
+        origin = head
+        head = head.next
+        while head is not None:
+            prev.next = head.next
+            head.next = origin
+            origin = head
+            head = prev.next
+        return origin
+```
+### Solution 2: Recursion
+```
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
+        new_head = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return new_head
+```
+### Solution 3: Reverse one by one
+```
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
+        prev = head
+        head = head.next
+        prev.next = None
+        while head.next is not None:
+            ahead = head.next
+            head.next = prev
+            prev,head = head,ahead
+        head.next = prev
+        return head
+```
+---
