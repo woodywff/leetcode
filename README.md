@@ -247,3 +247,27 @@ class Solution:
             return l2
 ```
 ---
+## Add Two Numbers
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        def to_int(head):
+            if head is None:
+                return 0
+            return head.val + 10 * to_int(head.next)
+        
+        def to_list(num):
+            head = ListNode(num % 10)
+            if num > 9:                
+                head.next = to_list(num//10)
+            return head
+        
+        return to_list(to_int(l1) + to_int(l2))
+```
+---
