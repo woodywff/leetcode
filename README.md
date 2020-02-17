@@ -271,3 +271,31 @@ class Solution:
         return to_list(to_int(l1) + to_int(l2))
 ```
 ---
+## Find Duplicate Subtrees
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        import collections
+        count = collections.Counter()
+        ans = []
+        
+        def dfs(root):
+            if root is None:
+                return '#'
+            serial = '{},{},{}'.format(root.val, dfs(root.left), dfs(root.right))
+            count[serial] += 1
+            if count[serial] == 2:
+                ans.append(root)
+            return serial
+        
+        dfs(root)
+        return ans
+```
+---
