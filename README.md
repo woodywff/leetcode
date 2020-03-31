@@ -1,26 +1,43 @@
 # code_daily
-To implement the demo for single modality requirement from Prof.Biswal, I deleted t2.nii.gz t1ce.nii.gz and flair.nii.gz and copy t1.nii.gz to be t2 t1ce and flair.
+---
+## KMP
 ```
-import os
-import glob
-import shutil
-from tqdm import *
-
-mods = ['t1ce','t2','flair']
-print('deleting...')
-for mod in mods:
-    for file in tqdm(glob.glob(os.path.abspath('../data/preprocessed_val_data/*/*/'+mod+'*'))):
-        if os.path.exists(file):
-            os.remove(file)
+def kmp_find(pattern, text):
+    pdb.set_trace()
+    prefix_arr = get_prefix_arr(pattern)
+    initial_point = []
+    p_text = p_pattern = 0
+    while p_text < len(text):
+        if text[p_text] == pattern[p_pattern]:
+            p_text += 1
+            p_pattern += 1
+            if p_pattern == len(pattern):
+                initial_point.append(p_text-p_pattern)
+                p_pattern = prefix_arr[p_pattern-1]
+        elif p_pattern == 0:
+            p_text += 1
         else:
-            print(file)
-print('copying...')
-for t1_file in tqdm(glob.glob(os.path.abspath('../data/preprocessed_val_data/*/*/t1*'))):
-    for mod in mods:
-        shutil.copy(t1_file,'/'.join(t1_file.split('/')[:-1])+'/'+mod+'.nii.gz')
-print('Done')
+            p_pattern = prefix_arr[p_pattern-1]
+        
+    return initial_point
+
+def get_prefix_arr(pattern):
+    prefix_arr = [0] * len(pattern)
+    n = 0
+    m = 1
+    while m < len(pattern):
+        if pattern[m] == pattern[n]:
+            n += 1
+            prefix_arr[m] = n
+            m += 1
+        elif n == 0:
+            prefix_arr[m] = 0
+            m += 1
+        else:
+            n = prefix_arr[n-1]
+    return prefix_arr
 ```
-----------------
+---
 ## Leetcode: Find K-th Smallest Pair Distance
 ```
 class Solution:
