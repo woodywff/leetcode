@@ -1,5 +1,21 @@
 # code_daily
 ---
+## 678. Valid Parenthesis String
+```
+class Solution:
+    def checkValidString(self, s: str) -> bool:
+        lo = hi = 0
+        for i in s:
+            lo += 1 if i == '(' else -1
+            hi += 1 if i != ')' else -1
+            if hi < 0:
+                break
+            lo = max(lo, 0)
+        return lo == 0
+```
+---
+
+
 ## KMP
 ```
 def kmp_find(pattern, text):
