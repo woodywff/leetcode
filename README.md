@@ -1,5 +1,89 @@
 # code_daily
 ---
+## Dijkstra
+```
+from collections import defaultdict
+from heapq import heappush, heappop
+
+class Graph:
+    def __init__(self):
+        graph = defaultdict(dict)
+        graph['src']['a'] = 6
+        graph['src']['b'] = 2
+        graph['a']['dest'] = 1
+        graph['b']['a'] = 3
+        graph['b']['dest'] = 5
+
+        costs = {}
+        costs['a'] = 6
+        costs['b'] = 2
+        costs['dest'] = float('inf')
+
+        parents = {}
+        parents['a'] = 'src'
+        parents['b'] = 'src'
+        parents['dest'] = None
+
+        self.visited = []
+        self.graph = graph
+        self.costs = costs
+        self.parents = parents
+        
+    
+    def get_min_cost(self):
+        min_cost = float('inf')
+        node = None
+        for i in self.costs:
+            if i not in self.visited:
+                if self.costs[i] < min_cost:
+                    min_cost = self.costs[i]
+                    node = i
+        return node
+    
+    def get_shortest_path(self):
+        node = 'dest'
+        shortest_path = ['dest']
+        while self.parents[node] != 'src':
+            shortest_path.append(self.parents[node])
+            node = self.parents[node]
+        shortest_path.append('src')
+        return shortest_path
+    
+    def dijkstra(self):
+        node = self.get_min_cost()
+        while node is not None:
+            cost = self.costs[node]
+            neighbors = self.graph[node]
+            for i in neighbors:
+                new_cost = cost + neighbors[i]
+                if new_cost < self.costs[i]:
+                    self.costs[i] = new_cost
+                    self.parents[i] = node
+            self.visited.append(node)
+            node = self.get_min_cost()
+        shortest_path = self.get_shortest_path()
+        shortest_path.reverse()
+        return shortest_path
+    
+    def dijkstra2(self, from_node, to_node):
+        q = [(0, from_node, [])]
+        seen = set()
+        while q:
+            cost, node, path = heappop(q)
+            seen.add(node)
+            path.append(node)
+            if node == to_node:
+                return cost,path
+            for adj_node, c in self.graph[node].items():
+                if adj_node not in seen:
+                    heappush(q, (cost+c, adj_node, path))
+        return -1,[]
+
+print(Graph().dijkstra())
+print(Graph().dijkstra2('src','dest'))
+```
+
+---
 ## 1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
 ```
 class Solution:
